@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 
 import co.com.ceiba.mobile.pruebadeingreso.base.BaseApplication;
+import co.com.ceiba.mobile.pruebadeingreso.db.AppDatabase;
 import co.com.ceiba.mobile.pruebadeingreso.rest.Endpoints;
 import co.com.ceiba.mobile.pruebadeingreso.rest.PostServices;
 import co.com.ceiba.mobile.pruebadeingreso.rest.UserServices;
@@ -62,6 +63,12 @@ public class ApplicationModule {
     @Singleton
     public PostServices providerPostApi(Retrofit retrofit) {
         return retrofit.create(PostServices.class);
+    }
+
+    @Provides
+    @Singleton
+    public AppDatabase providerDatabase() {
+        return AppDatabase.getDbInstance(BaseApplication.getContext());
     }
 
 }

@@ -1,5 +1,8 @@
 package co.com.ceiba.mobile.pruebadeingreso.di.module;
 
+import android.content.Context;
+
+import co.com.ceiba.mobile.pruebadeingreso.db.AppDatabase;
 import co.com.ceiba.mobile.pruebadeingreso.repositories.PostRepository;
 import co.com.ceiba.mobile.pruebadeingreso.repositories.UserRepository;
 import co.com.ceiba.mobile.pruebadeingreso.rest.PostServices;
@@ -11,8 +14,8 @@ import dagger.Provides;
 public class RepositoryModule {
 
     @Provides
-    public UserRepository providerUserRepositories(UserServices userServices){
-        return new UserRepository(userServices);
+    public UserRepository providerUserRepositories(UserServices userServices, AppDatabase appDatabase){
+        return new UserRepository(userServices,appDatabase);
     }
 
     @Provides

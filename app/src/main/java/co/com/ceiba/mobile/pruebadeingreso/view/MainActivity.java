@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
     }
 
     private void loadService(){
-        mainViewModel.getUsers();
+        mainViewModel.loadUsers();
     }
 
 

@@ -35,8 +35,18 @@ public class MainViewModel extends ViewModel {
         this.progress = new MutableLiveData<>();
     }
 
-    public void getUsers(){
-        progress.setValue(true);
+    public void loadUsers(){
+        try {
+            progress.setValue(true);
+            List<User> users = userRepository.getUsersDB();
+            validateService(users);
+        }catch (Exception e){
+            Log.e(e.getLocalizedMessage(),e.getMessage());
+        }
+
+    }
+
+    public void getUsersService(){
         Observable<List<User>> response = userRepository.getService();
         Disposable disposable = response.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -44,6 +54,7 @@ public class MainViewModel extends ViewModel {
                     @Override
                     public void onNext(@NonNull List<User> users) {
                         loadData(users);
+                        saveData(users);
                     }
 
                     @Override
@@ -57,6 +68,23 @@ public class MainViewModel extends ViewModel {
                     }
                 });
         disposables.add(disposable);
+    }
+
+    private void saveData(List<User> users) {
+        try {
+            userRepository.setUsers(users);
+        }catch (Exception e){
+            Log.e(e.getLocalizedMessage(),e.getMessage());
+        }
+    }
+
+    public void validateService(List<User> users){
+        if(users.isEmpty()){
+            getUsersService();
+        }else{
+            this.users.setValue(users);
+            progress.setValue(false);
+        }
     }
 
     @Override

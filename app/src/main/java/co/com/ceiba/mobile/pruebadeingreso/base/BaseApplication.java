@@ -2,6 +2,7 @@ package co.com.ceiba.mobile.pruebadeingreso.base;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -16,6 +17,9 @@ import dagger.android.HasFragmentInjector;
 
 public class BaseApplication extends MultiDexApplication implements HasActivityInjector, HasFragmentInjector  {
 
+    private static Context context;
+
+
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
@@ -27,12 +31,17 @@ public class BaseApplication extends MultiDexApplication implements HasActivityI
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         this.initDagger();
     }
 
 
     private void initDagger(){
         DaggerApplicationComponent.builder().create(this).inject(this);
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     @Override
