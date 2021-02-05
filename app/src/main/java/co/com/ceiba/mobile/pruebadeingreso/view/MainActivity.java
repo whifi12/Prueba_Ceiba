@@ -44,7 +44,8 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
 
     private void loadActivity(){
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
-        this.configureDagger();
+        configureDagger();
+        createProgressDialog();
         mainViewModel = ViewModelProviders.of(this,viewModelFactory).get(MainViewModel.class);
         binding.setViewModel((MainViewModel) mainViewModel);
     }
@@ -57,6 +58,13 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
         mainViewModel.getList().observe(this, users -> {
             this.users = users;
             adapter.setItems(users);
+        });
+        mainViewModel.getProgress().observe(this,progress -> {
+           if(progress){
+               showProgressDIalog(R.string.generic_message_progress);
+           }else{
+               dismissProgressDialog();
+           }
         });
     }
 
@@ -72,6 +80,7 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
 
     private void goToPost(User user){
         Intent intent = new Intent(MainActivity.this ,PostActivity.class);
+        intent.putExtra(Constants.ID,user.getId());
         intent.putExtra(Constants.NAME,user.getName());
         intent.putExtra(Constants.EMAIL,user.getEmail());
         intent.putExtra(Constants.PHONE,user.getPhone());
@@ -82,10 +91,6 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
         mainViewModel.getUsers();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

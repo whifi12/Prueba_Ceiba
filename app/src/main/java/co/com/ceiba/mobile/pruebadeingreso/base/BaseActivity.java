@@ -1,5 +1,8 @@
 package co.com.ceiba.mobile.pruebadeingreso.base;
 
+import android.app.ProgressDialog;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,9 +22,31 @@ public class BaseActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     protected ViewModelProvider.Factory viewModelFactory;
 
+    private ProgressDialog progressDialog;
+
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    public void createProgressDialog() {
+        this.progressDialog = new ProgressDialog(this);
+        this.progressDialog.setCancelable(false);
+    }
+
+    public void showProgressDIalog(final int text) {
+        runOnUiThread(() -> {
+            try {
+                progressDialog.setMessage(getResources().getString(text));
+                progressDialog.show();
+            } catch (Exception e) {
+                Log.e("Exception", e.toString());
+            }
+        });
+    }
+
+    public void dismissProgressDialog() {
+        this.progressDialog.dismiss();
     }
 
     protected void configureDagger() {

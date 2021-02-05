@@ -25,15 +25,18 @@ public class MainViewModel extends ViewModel {
     private IUserBL userRepository;
     private CompositeDisposable disposables;
     private MutableLiveData<List<User>> users;
+    private MutableLiveData<Boolean> progress;
 
     @Inject
     public MainViewModel(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.disposables = new CompositeDisposable();
         this.users = new MutableLiveData<>();
+        this.progress = new MutableLiveData<>();
     }
 
     public void getUsers(){
+        progress.setValue(true);
         Observable<List<User>> response = userRepository.getService();
         Disposable disposable = response.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +53,7 @@ public class MainViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-
+                        progress.setValue(false);
                     }
                 });
         disposables.add(disposable);
@@ -60,6 +63,10 @@ public class MainViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         disposables.dispose();
+    }
+
+    public MutableLiveData<Boolean> getProgress() {
+        return progress;
     }
 
     private void loadData(List<User> users){

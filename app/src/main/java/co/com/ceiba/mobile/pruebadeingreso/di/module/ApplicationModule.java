@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import co.com.ceiba.mobile.pruebadeingreso.base.BaseApplication;
 import co.com.ceiba.mobile.pruebadeingreso.rest.Endpoints;
+import co.com.ceiba.mobile.pruebadeingreso.rest.PostServices;
 import co.com.ceiba.mobile.pruebadeingreso.rest.UserServices;
 import dagger.Module;
 import dagger.Provides;
@@ -53,8 +54,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public UserServices providerPostApi(Retrofit retrofit) {
+    public UserServices providerUserApi(Retrofit retrofit) {
         return retrofit.create(UserServices.class);
+    }
+
+    @Provides
+    @Singleton
+    public PostServices providerPostApi(Retrofit retrofit) {
+        return retrofit.create(PostServices.class);
     }
 
 }
