@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 
 import co.com.ceiba.mobile.pruebadeingreso.base.BaseApplication;
+import co.com.ceiba.mobile.pruebadeingreso.rest.Endpoints;
 import co.com.ceiba.mobile.pruebadeingreso.rest.UserServices;
 import dagger.Module;
 import dagger.Provides;
@@ -43,7 +44,7 @@ public class ApplicationModule {
 
 
         return new Retrofit.Builder()
-                .baseUrl("https://restcountries.eu/rest/v2/")
+                .baseUrl(Endpoints.URL_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(okHttpClient.build())
