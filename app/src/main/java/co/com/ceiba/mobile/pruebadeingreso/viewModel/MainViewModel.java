@@ -88,7 +88,7 @@ public class MainViewModel extends ViewModel {
         }
     }
 
-    private void saveData(List<User> users) {
+    public void saveData(List<User> users) {
         try {
             userRepository.setUsers(users);
         }catch (Exception e){
@@ -115,7 +115,7 @@ public class MainViewModel extends ViewModel {
         return progress;
     }
 
-    private void loadData(List<User> users){
+    public void loadData(List<User> users){
         this.users.setValue(users);
     }
 

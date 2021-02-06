@@ -98,7 +98,7 @@ public class PostViewModel extends ViewModel {
         }
     }
 
-    private void saveData(List<Post> posts) {
+    public void saveData(List<Post> posts) {
         try {
             postBL.addPostsDB(posts);
         }catch (Exception e){
