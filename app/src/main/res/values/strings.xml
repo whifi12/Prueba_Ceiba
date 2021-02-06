@@ -5,6 +5,10 @@
     <string name="btn_view_comments">Ver comentarios</string>
     <string name="generic_message_progress">Por favor espere...</string>
     <string name="generic_error">Ha ocurrido un error inesperado</string>
+    <string name="error_title">Apreciado usuario</string>
+    <string name="internet_error">No te encuentras conectado a internet.</string>
+    <string name="try_again">Intentar de nuevo</string>
     <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
     <string name="list_is_empty">List is empty</string>
 </resources>

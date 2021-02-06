@@ -10,4 +10,8 @@ public interface IPostBL {
 
     Observable<List<Post>> getPost(String id);
 
+    List<Post> getPostDB(String userId);
+
+    void addPostsDB(List<Post> posts);
+
 }

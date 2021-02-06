@@ -12,6 +12,7 @@ import co.com.ceiba.mobile.pruebadeingreso.db.AppDatabase;
 import co.com.ceiba.mobile.pruebadeingreso.rest.Endpoints;
 import co.com.ceiba.mobile.pruebadeingreso.rest.PostServices;
 import co.com.ceiba.mobile.pruebadeingreso.rest.UserServices;
+import co.com.ceiba.mobile.pruebadeingreso.util.ValidateInternet;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.schedulers.Schedulers;
@@ -69,6 +70,12 @@ public class ApplicationModule {
     @Singleton
     public AppDatabase providerDatabase() {
         return AppDatabase.getDbInstance(BaseApplication.getContext());
+    }
+
+    @Provides
+    @Singleton
+    public ValidateInternet providerValidateInternet() {
+        return new ValidateInternet(BaseApplication.getContext());
     }
 
 }

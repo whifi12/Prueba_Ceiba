@@ -5,26 +5,21 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class UserDB {
+public class PostDB {
 
     @PrimaryKey(autoGenerate = true)
     public int uid;
 
+    @ColumnInfo(name = "userid")
+    public String userId;
+
     @ColumnInfo(name = "id")
     public String id;
 
-    @ColumnInfo(name = "name")
-    public String name;
+    @ColumnInfo(name = "title")
+    public String title;
 
-    @ColumnInfo(name = "phone")
-    public String phone;
-
-    @ColumnInfo(name = "username")
-    public String username;
-
-    @ColumnInfo(name = "email")
-    public String email;
-
-
+    @ColumnInfo(name = "body")
+    public String body;
 
 }

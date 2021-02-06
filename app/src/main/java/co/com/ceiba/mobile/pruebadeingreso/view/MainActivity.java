@@ -66,6 +66,9 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
                dismissProgressDialog();
            }
         });
+        mainViewModel.getError().observe(this,error ->{
+            showAlertDialogTryAgain(error.getTitle(),error.getText());
+        });
     }
 
     private void loadRecycler() {
@@ -89,6 +92,14 @@ public class MainActivity extends BaseActivity implements UserRecyclerAdapter.On
 
     private void loadService(){
         mainViewModel.loadUsers();
+    }
+
+    private void showAlertDialogTryAgain(final int title, final int message) {
+        runOnUiThread(() -> {
+            showAlertDialog(title, message, false, R.string.try_again, (dialogInterface, i) -> {
+                loadService();
+            }, R.string.cancel , (dialogInterface, i) -> onBackPressed(), null);
+        });
     }
 
 

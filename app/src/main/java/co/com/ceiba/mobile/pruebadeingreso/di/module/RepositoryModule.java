@@ -19,8 +19,8 @@ public class RepositoryModule {
     }
 
     @Provides
-    public PostRepository providerPostRepository(PostServices postServices){
-        return new PostRepository(postServices);
+    public PostRepository providerPostRepository(PostServices postServices, AppDatabase appDatabase){
+        return new PostRepository(postServices,appDatabase);
     }
 
 

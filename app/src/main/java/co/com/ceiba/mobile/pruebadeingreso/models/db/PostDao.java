@@ -8,13 +8,13 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface UserDao {
+public interface PostDao {
 
-    @Query("SELECT * FROM userDB")
-    List<UserDB> getAllUsers();
+    @Query("SELECT * FROM PostDB WHERE userid = :userId ")
+    List<PostDB> getPostByUser(String userId);
 
     @Insert
-    void insertUser(List<UserDB> users);
+    void insertPostByUser(List<PostDB> postDBS);
 
 
 }

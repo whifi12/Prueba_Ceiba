@@ -6,6 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
+
+import co.com.ceiba.mobile.pruebadeingreso.R;
+import co.com.ceiba.mobile.pruebadeingreso.util.Error;
+import co.com.ceiba.mobile.pruebadeingreso.util.IValidateInternet;
+import co.com.ceiba.mobile.pruebadeingreso.util.ValidateInternet;
 import io.reactivex.Observable;
 
 import javax.inject.Inject;
@@ -26,13 +31,17 @@ public class MainViewModel extends ViewModel {
     private CompositeDisposable disposables;
     private MutableLiveData<List<User>> users;
     private MutableLiveData<Boolean> progress;
+    private IValidateInternet validateInternet;
+    private MutableLiveData<Error> error;
 
     @Inject
-    public MainViewModel(UserRepository userRepository) {
+    public MainViewModel(UserRepository userRepository, ValidateInternet validateInternet) {
         this.userRepository = userRepository;
+        this.validateInternet = validateInternet;
         this.disposables = new CompositeDisposable();
         this.users = new MutableLiveData<>();
         this.progress = new MutableLiveData<>();
+        this.error = new MutableLiveData<>();
     }
 
     public void loadUsers(){
@@ -41,7 +50,8 @@ public class MainViewModel extends ViewModel {
             List<User> users = userRepository.getUsersDB();
             validateService(users);
         }catch (Exception e){
-            Log.e(e.getLocalizedMessage(),e.getMessage());
+            error.setValue(new Error(R.string.error_title,R.string.generic_error));
+            progress.setValue(false);
         }
 
     }
@@ -59,7 +69,7 @@ public class MainViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.e(e.getLocalizedMessage(),e.getMessage());
+                        error.setValue(new Error(R.string.error_title,R.string.generic_error));
                     }
 
                     @Override
@@ -68,6 +78,14 @@ public class MainViewModel extends ViewModel {
                     }
                 });
         disposables.add(disposable);
+    }
+
+    public void validateInternetToGetUsers(){
+        if(validateInternet.isConnected()){
+            getUsersService();
+        }else {
+            error.setValue(new Error(R.string.error_title,R.string.internet_error));
+        }
     }
 
     private void saveData(List<User> users) {
@@ -80,7 +98,7 @@ public class MainViewModel extends ViewModel {
 
     public void validateService(List<User> users){
         if(users.isEmpty()){
-            getUsersService();
+            validateInternetToGetUsers();
         }else{
             this.users.setValue(users);
             progress.setValue(false);
@@ -105,4 +123,7 @@ public class MainViewModel extends ViewModel {
         return users;
     }
 
+    public MutableLiveData<Error> getError() {
+        return error;
+    }
 }

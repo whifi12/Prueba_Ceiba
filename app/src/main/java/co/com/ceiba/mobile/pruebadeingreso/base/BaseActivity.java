@@ -1,8 +1,13 @@
 package co.com.ceiba.mobile.pruebadeingreso.base;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,10 +28,30 @@ public class BaseActivity extends AppCompatActivity implements HasSupportFragmen
     protected ViewModelProvider.Factory viewModelFactory;
 
     private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    public void showAlertDialog(int title, int message, boolean cancelable, int textPositiveButton, DialogInterface.OnClickListener onClickListenerPositiveButton, int textNegativeButton, DialogInterface.OnClickListener onClickListenerNegativeButton, View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        if (view != null) {
+            builder.setView(view);
+        }
+        builder.setMessage(message);
+        builder.setCancelable(cancelable);
+
+        if (onClickListenerPositiveButton != null) {
+            builder.setPositiveButton(textPositiveButton, onClickListenerPositiveButton);
+        }
+        if (onClickListenerNegativeButton != null) {
+            builder.setNegativeButton(textNegativeButton, onClickListenerNegativeButton);
+        }
+        alertDialog = builder.show();
+
     }
 
     public void createProgressDialog() {
@@ -47,6 +72,10 @@ public class BaseActivity extends AppCompatActivity implements HasSupportFragmen
 
     public void dismissProgressDialog() {
         this.progressDialog.dismiss();
+    }
+
+    public AlertDialog getAlertDialog() {
+        return alertDialog;
     }
 
     protected void configureDagger() {

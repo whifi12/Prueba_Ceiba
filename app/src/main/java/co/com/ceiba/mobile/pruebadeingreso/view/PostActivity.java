@@ -40,7 +40,7 @@ public class PostActivity extends BaseActivity {
     }
 
     private void loadService(){
-        postViewModel.getPost(getIntent().getStringExtra(Constants.ID));
+        postViewModel.loadPosts(getIntent().getStringExtra(Constants.ID));
     }
 
     private void listenerObservable() {
@@ -54,6 +54,9 @@ public class PostActivity extends BaseActivity {
             }else{
                 dismissProgressDialog();
             }
+        });
+        postViewModel.getError().observe(this,error ->{
+            showAlertDialogTryAgain(error.getTitle(),error.getText());
         });
     }
 
@@ -79,6 +82,14 @@ public class PostActivity extends BaseActivity {
         binding.name.setText(getIntent().getStringExtra(Constants.NAME));
         binding.phone.setText(getIntent().getStringExtra(Constants.PHONE));
         binding.email.setText(getIntent().getStringExtra(Constants.EMAIL));
+    }
+
+    private void showAlertDialogTryAgain(final int title, final int message) {
+        runOnUiThread(() -> {
+            showAlertDialog(title, message, false, R.string.try_again, (dialogInterface, i) -> {
+                loadService();
+            }, R.string.cancel , (dialogInterface, i) -> onBackPressed(), null);
+        });
     }
 
 
